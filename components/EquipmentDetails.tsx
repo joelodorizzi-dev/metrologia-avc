@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Equipment, EquipmentStatus, CalibrationRecord, ViewState } from '../types';
 import { StorageService } from '../services/storage';
-import { ArrowLeft, Save, Trash2, History, PlusCircle, Printer, AlertTriangle, Gauge, Loader2, Filter, Pencil } from 'lucide-react';
+import { ArrowLeft, Save, Trash2, History, PlusCircle, Printer, AlertTriangle, Gauge, Loader2, Filter, Pencil, PlayCircle } from 'lucide-react';
 
 interface EquipmentDetailsProps {
   equipmentId: string;
@@ -14,6 +14,7 @@ export const EquipmentDetails: React.FC<EquipmentDetailsProps> = ({ equipmentId,
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [filterYear, setFilterYear] = useState<string>('all');
+  const [isNew, setIsNew] = useState(false);
 
   useEffect(() => {
     const loadDetails = async () => {
@@ -24,18 +25,26 @@ export const EquipmentDetails: React.FC<EquipmentDetailsProps> = ({ equipmentId,
           setEquipment(found);
           const calHistory = await StorageService.getCalibrations(found.id);
           setHistory(calHistory);
+          // Simple check: if tag is still default, it's likely a fresh creation
+          if (found.tag === 'NOVO-000') setIsNew(true);
         }
         setLoading(false);
     };
     loadDetails();
   }, [equipmentId]);
 
-  const handleSave = async () => {
+  const handleSave = async (andCalibrate: boolean = false) => {
     if (equipment) {
       setSaving(true);
       await StorageService.saveEquipment(equipment);
       setSaving(false);
-      alert('Equipamento salvo com sucesso!');
+      
+      if (andCalibrate) {
+        setView({ type: 'NEW_CALIBRATION', equipmentId: equipment.id });
+      } else {
+        alert('Equipamento salvo com sucesso!');
+        setIsNew(false); // No longer considered "new" after first save
+      }
     }
   };
 
@@ -84,13 +93,23 @@ export const EquipmentDetails: React.FC<EquipmentDetailsProps> = ({ equipmentId,
           >
             <Trash2 size={20} />
           </button>
+          
           <button 
-            onClick={handleSave}
+            onClick={() => handleSave(false)}
             disabled={saving}
-            className="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm disabled:opacity-50"
+            className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm disabled:opacity-50"
           >
-            {saving ? <Loader2 className="animate-spin" size={18} /> : <Save size={18} />}
-            <span>{saving ? 'Salvando...' : 'Salvar Alterações'}</span>
+            <Save size={18} />
+            <span className="hidden md:inline">Salvar</span>
+          </button>
+
+          <button 
+            onClick={() => handleSave(true)}
+            disabled={saving}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm disabled:opacity-50"
+          >
+            {saving ? <Loader2 className="animate-spin" size={18} /> : <PlayCircle size={18} />}
+            <span>Salvar e Calibrar</span>
           </button>
         </div>
       </div>
@@ -272,4 +291,3 @@ const StatusBadge = ({ result }: { result: string }) => {
       {result}
     </span>
   );
-}
