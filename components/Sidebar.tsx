@@ -132,7 +132,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ setView, isOpen, setIsOpen }) 
                     connectionStatus === 'offline' ? 'Offline' : '...'}
                  </span>
                </div>
-               <p>v1.0.5 &copy; 2024</p>
+               <p>v1.0.9 &copy; 2024</p>
             </>
           ) : (
             <div title={connectionStatus === 'online' ? 'Online' : 'Offline'}>
