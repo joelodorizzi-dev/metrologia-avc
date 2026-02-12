@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Equipment, EquipmentStatus, CalibrationRecord, ViewState } from '../types';
 import { StorageService } from '../services/storage';
-import { ArrowLeft, Save, Trash2, History, PlusCircle, Printer, AlertTriangle, Gauge, Loader2, Filter, Pencil, PlayCircle } from 'lucide-react';
+import { ArrowLeft, Save, Trash2, History, PlusCircle, Printer, Filter, Gauge, Loader2, Pencil, PlayCircle } from 'lucide-react';
 
 interface EquipmentDetailsProps {
   equipmentId: string;
@@ -124,22 +124,22 @@ export const EquipmentDetails: React.FC<EquipmentDetailsProps> = ({ equipmentId,
             </h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <InputGroup label="Tag / Identificação" value={equipment.tag} onChange={(v) => handleChange('tag', v)} />
-              <InputGroup label="Nome do Equipamento" value={equipment.name} onChange={(v) => handleChange('name', v)} />
+              <InputGroup label="Tag / Identificação" value={equipment.tag} onChange={(v: string) => handleChange('tag', v)} />
+              <InputGroup label="Nome do Equipamento" value={equipment.name} onChange={(v: string) => handleChange('name', v)} />
               
-              <InputGroup label="Fabricante" value={equipment.manufacturer} onChange={(v) => handleChange('manufacturer', v)} />
-              <InputGroup label="Modelo" value={equipment.model} onChange={(v) => handleChange('model', v)} />
+              <InputGroup label="Fabricante" value={equipment.manufacturer} onChange={(v: string) => handleChange('manufacturer', v)} />
+              <InputGroup label="Modelo" value={equipment.model} onChange={(v: string) => handleChange('model', v)} />
               
-              <InputGroup label="Número de Série" value={equipment.serialNumber} onChange={(v) => handleChange('serialNumber', v)} />
-              <InputGroup label="Localização" value={equipment.location} onChange={(v) => handleChange('location', v)} />
+              <InputGroup label="Número de Série" value={equipment.serialNumber} onChange={(v: string) => handleChange('serialNumber', v)} />
+              <InputGroup label="Localização" value={equipment.location} onChange={(v: string) => handleChange('location', v)} />
 
               <div className="md:col-span-2 border-t border-slate-100 my-2"></div>
 
-              <InputGroup label="Faixa de Medição" value={equipment.range} onChange={(v) => handleChange('range', v)} />
-              <InputGroup label="Resolução" value={equipment.resolution} onChange={(v) => handleChange('resolution', v)} />
-              <InputGroup label="Critério de Aceitação (Tolerância)" value={equipment.accuracy} onChange={(v) => handleChange('accuracy', v)} fullWidth />
+              <InputGroup label="Faixa de Medição" value={equipment.range} onChange={(v: string) => handleChange('range', v)} />
+              <InputGroup label="Resolução" value={equipment.resolution} onChange={(v: string) => handleChange('resolution', v)} />
+              <InputGroup label="Critério de Aceitação (Tolerância)" value={equipment.accuracy} onChange={(v: string) => handleChange('accuracy', v)} fullWidth />
               
-              <InputGroup label="Fornecedor / Laboratório" value={equipment.supplier || ''} onChange={(v) => handleChange('supplier', v)} fullWidth placeholder="Empresa responsável pela calibração externa" />
+              <InputGroup label="Fornecedor / Laboratório" value={equipment.supplier || ''} onChange={(v: string) => handleChange('supplier', v)} fullWidth placeholder="Empresa responsável pela calibração externa" />
 
               {/* Specific Fields for Valves */}
               <div className="md:col-span-2 bg-slate-50 p-4 rounded-lg border border-slate-100 mt-2">
@@ -151,13 +151,13 @@ export const EquipmentDetails: React.FC<EquipmentDetailsProps> = ({ equipmentId,
                   <InputGroup 
                     label="Pressão de Abertura (Set Pressure)" 
                     value={equipment.openingPressure || ''} 
-                    onChange={(v) => handleChange('openingPressure', v)} 
+                    onChange={(v: string) => handleChange('openingPressure', v)} 
                     placeholder="Ex: 10.5 bar"
                   />
                   <InputGroup 
                     label="Pressão de Fechamento (Blowdown)" 
                     value={equipment.closingPressure || ''} 
-                    onChange={(v) => handleChange('closingPressure', v)} 
+                    onChange={(v: string) => handleChange('closingPressure', v)} 
                     placeholder="Ex: 9.8 bar"
                   />
                 </div>
@@ -180,7 +180,7 @@ export const EquipmentDetails: React.FC<EquipmentDetailsProps> = ({ equipmentId,
                 type="date"
                 label="Próxima Calibração" 
                 value={equipment.nextCalibrationDate} 
-                onChange={(v) => handleChange('nextCalibrationDate', v)} 
+                onChange={(v: string) => handleChange('nextCalibrationDate', v)} 
               />
             </div>
           </div>
@@ -291,3 +291,4 @@ const StatusBadge = ({ result }: { result: string }) => {
       {result}
     </span>
   );
+};
